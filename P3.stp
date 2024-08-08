@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project>
+  <Version>19.1</Version>
+  <Reference>{82AB898E-23DA-4CC2-B9D3-987E8743A1A3}</Reference>
+  <DocumentManager>
+    <Document>
+      <ID>{4622712E-F5A6-4281-9738-19FF9B837481}</ID>
+      <Paths>1</Paths>
+      <URL>.\Y4Co3.xsd</URL>
+      <Property>
+        <Name>Visible</Name>
+        <Type>11</Type>
+        <Value>-1</Value>
+      </Property>
+    </Document>
+  </DocumentManager>
+  <ViewRegistry>
+    <Frame>
+      <Active>true</Active>
+      <Left>0</Left>
+      <Top>0</Top>
+      <Width>873</Width>
+      <Height>364</Height>
+      <Maximized>true</Maximized>
+      <Minimized>false</Minimized>
+      <View>
+        <Active>true</Active>
+        <DocumentID>{4622712E-F5A6-4281-9738-19FF9B837481}</DocumentID>
+        <Type>SVViewer3D.Viewer3DControl</Type>
+      </View>
+    </Frame>
+  </ViewRegistry>
+  <DocumentEventManager>
+  </DocumentEventManager>
+</Project>

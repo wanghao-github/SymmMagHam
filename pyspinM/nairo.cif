@@ -1,0 +1,37 @@
+data_nairo
+_audit_creation_date              2024-04-29
+_audit_creation_method            'Materials Studio'
+_symmetry_space_group_name_H-M    'C2/M'
+_symmetry_Int_Tables_number       12
+_symmetry_cell_setting            monoclinic
+loop_
+_symmetry_equiv_pos_as_xyz
+  x,y,z
+  -x,y,-z
+  -x,-y,-z
+  x,-y,z
+  x+1/2,y+1/2,z
+  -x+1/2,y+1/2,-z
+  -x+1/2,-y+1/2,-z
+  x+1/2,-y+1/2,z
+_cell_length_a                    5.4270
+_cell_length_b                    9.3950
+_cell_length_c                    5.6140
+_cell_angle_alpha                 90.0000
+_cell_angle_beta                  109.0370
+_cell_angle_gamma                 90.0000
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_U_iso_or_equiv
+_atom_site_adp_type
+_atom_site_occupancy
+O1     O     0.74800   0.17800   0.78900   0.00000  Uiso   1.00
+Ir2    Ir    0.50000   0.16700   0.00000   0.00000  Uiso   1.00
+Na3    Na    0.00000   0.00000   0.00000   0.00000  Uiso   1.00
+Na4    Na    0.50000   0.00000   0.50000   0.00000  Uiso   1.00
+Na5    Na    0.50000   0.34000   0.50000   0.00000  Uiso   1.00
+O6     O     0.71100   0.00000   0.20400   0.00000  Uiso   1.00

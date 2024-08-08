@@ -1,0 +1,69 @@
+# CIF file created by FINDSYM, version 7.1.3
+
+data_findsym-output
+_audit_creation_method FINDSYM
+
+_cell_length_a     5.6391500000
+_cell_length_b     20.0000000000
+_cell_length_c     9.7672943115
+_cell_angle_alpha  90.0000000000
+_cell_angle_beta   90.0000000000
+_cell_angle_gamma  90.0000000000
+_cell_volume       1101.5847543341
+
+_space_group_magn.number_BNS "59.415"
+_space_group_magn.name_UNI "Pmnm.1'_B[Bmmm]"
+_space_group_magn.name_BNS "P_Bmnm"
+_space_group_magn.number_OG "65.14.558"
+_space_group_magn.name_OG "C_Pmmm'"
+_space_group_magn.point_group_number_Litvin "8.2.25"
+_space_group_magn.point_group_name_UNI "mmm.1'"
+
+loop_
+_space_group_magn_transforms.id
+_space_group_magn_transforms.Pp_abc
+_space_group_magn_transforms.source
+1 a,c,-b;0,0,0 "BNS"
+2 a,c,-b;-1/4,-1/4,0 "OG"
+
+loop_
+_space_group_symop_magn_operation.id
+_space_group_symop_magn_operation.xyz
+1 x,y,z,+1 
+2 x+1/2,-y,-z,+1 
+3 -x,-y,z+1/2,+1 
+4 -x+1/2,y,-z+1/2,+1 
+5 -x,-y,-z,+1 
+6 -x+1/2,y,z,+1 
+7 x,y,-z+1/2,+1 
+8 x+1/2,-y,z+1/2,+1 
+
+loop_
+_space_group_symop_magn_centering.id
+_space_group_symop_magn_centering.xyz
+1 x,y,z,+1 
+2 x+1/2,y,z+1/2,-1 
+
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_occupancy
+_atom_site_fract_symmform
+I1  I    4 l  0.25000  0.44151  0.75000  1.00000 0,Dy,0 
+I2  I    8 m  0.50000  0.44151  0.50000  1.00000 0,Dy,0 
+Cr1 Cr   4 j  0.25000  0.50000  0.58333  1.00000 0,0,Dz 
+
+loop_
+_atom_site_moment.label
+_atom_site_moment.crystalaxis_x
+_atom_site_moment.crystalaxis_y
+_atom_site_moment.crystalaxis_z
+_atom_site_moment.symmform
+Cr1  1.00000  0.00000  0.00000 Mx,0,0 
+
+# end of cif

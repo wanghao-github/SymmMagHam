@@ -1,0 +1,83 @@
+# CIF file created by FINDSYM, version 7.1.3
+
+data_findsym-output
+_audit_creation_method FINDSYM
+
+_cell_length_a     5.6391500000
+_cell_length_b     5.6391500000
+_cell_length_c     20.0000000000
+_cell_angle_alpha  90.0000000000
+_cell_angle_beta   90.0000000000
+_cell_angle_gamma  120.0000000000
+_cell_volume       550.7923771671
+
+_space_group_magn.number_BNS "191.240"
+_space_group_magn.name_UNI "P6/mm'm'"
+_space_group_magn.name_BNS "P6/mm'm'"
+_space_group_magn.number_OG "191.8.1470"
+_space_group_magn.name_OG "P6/mm'm'"
+_space_group_magn.point_group_number_Litvin "27.6.105"
+_space_group_magn.point_group_name_UNI "6/mm'm'"
+
+loop_
+_space_group_magn_transforms.id
+_space_group_magn_transforms.Pp_abc
+_space_group_magn_transforms.source
+1 a,b,c;0,0,0 "BNS"
+2 a,b,c;0,0,0 "OG"
+
+loop_
+_space_group_symop_magn_operation.id
+_space_group_symop_magn_operation.xyz
+1 x,y,z,+1 
+2 x-y,x,z,+1 
+3 -y,x-y,z,+1 
+4 -x,-y,z,+1 
+5 -x+y,-x,z,+1 
+6 y,-x+y,z,+1 
+7 -x,-y,-z,+1 
+8 -x+y,-x,-z,+1 
+9 y,-x+y,-z,+1 
+10 x,y,-z,+1 
+11 x-y,x,-z,+1 
+12 -y,x-y,-z,+1 
+13 x-y,-y,-z,-1 
+14 x,x-y,-z,-1 
+15 y,x,-z,-1 
+16 -x+y,y,-z,-1 
+17 -x,-x+y,-z,-1 
+18 -y,-x,-z,-1 
+19 -x+y,y,z,-1 
+20 -x,-x+y,z,-1 
+21 -y,-x,z,-1 
+22 x-y,-y,z,-1 
+23 x,x-y,z,-1 
+24 y,x,z,-1 
+
+loop_
+_space_group_symop_magn_centering.id
+_space_group_symop_magn_centering.xyz
+1 x,y,z,+1 
+
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_Wyckoff_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_occupancy
+_atom_site_fract_symmform
+I1  I    6 i  0.50000  0.00000  0.55849  1.00000 0,0,Dz 
+Cr1 Cr   2 d  0.33333  0.66667  0.50000  1.00000 0,0,0  
+
+loop_
+_atom_site_moment.label
+_atom_site_moment.crystalaxis_x
+_atom_site_moment.crystalaxis_y
+_atom_site_moment.crystalaxis_z
+_atom_site_moment.symmform
+Cr1  0.00000  0.00000 -1.00000 0,0,Mz 
+
+# end of cif

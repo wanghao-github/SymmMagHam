@@ -1,0 +1,118 @@
+data_CrI3_2_2supercell
+_audit_creation_date              2024-04-30
+_audit_creation_method            'Materials Studio'
+_symmetry_space_group_name_H-M    'P1'
+_symmetry_Int_Tables_number       1
+_symmetry_cell_setting            triclinic
+loop_
+_symmetry_equiv_pos_as_xyz
+  x,y,z
+_cell_length_a                    11.2783
+_cell_length_b                    11.2783
+_cell_length_c                    20.0000
+_cell_angle_alpha                 90.0000
+_cell_angle_beta                  90.0000
+_cell_angle_gamma                 120.0000
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_U_iso_or_equiv
+_atom_site_adp_type
+_atom_site_occupancy
+I1     I     0.25000   0.00000   0.44151   0.01267  Uiso   1.00
+I2     I     0.00000   0.25000   0.44151   0.01267  Uiso   1.00
+I3     I     0.25000   0.25000   0.44151   0.01267  Uiso   1.00
+I4     I     0.00000   0.25000   0.55849   0.01267  Uiso   1.00
+I5     I     0.25000   0.00000   0.55849   0.01267  Uiso   1.00
+I6     I     0.25000   0.25000   0.55849   0.01267  Uiso   1.00
+Cr7    Cr    0.16667   0.33333   0.50000   0.01267  Uiso   1.00
+Cr8    Cr    0.33333   0.16667   0.50000   0.01267  Uiso   1.00
+I9     I     0.75000   0.00000   0.44151   0.01267  Uiso   1.00
+I10    I     0.50000   0.25000   0.44151   0.01267  Uiso   1.00
+I11    I     0.75000   0.25000   0.44151   0.01267  Uiso   1.00
+I12    I     0.50000   0.25000   0.55849   0.01267  Uiso   1.00
+I13    I     0.75000   0.00000   0.55849   0.01267  Uiso   1.00
+I14    I     0.75000   0.25000   0.55849   0.01267  Uiso   1.00
+Cr15   Cr    0.66667   0.33333   0.50000   0.01267  Uiso   1.00
+Cr16   Cr    0.83333   0.16667   0.50000   0.01267  Uiso   1.00
+I17    I     0.25000   0.50000   0.44151   0.01267  Uiso   1.00
+I18    I     0.00000   0.75000   0.44151   0.01267  Uiso   1.00
+I19    I     0.25000   0.75000   0.44151   0.01267  Uiso   1.00
+I20    I     0.00000   0.75000   0.55849   0.01267  Uiso   1.00
+I21    I     0.25000   0.50000   0.55849   0.01267  Uiso   1.00
+I22    I     0.25000   0.75000   0.55849   0.01267  Uiso   1.00
+Cr23   Cr    0.16667   0.83333   0.50000   0.01267  Uiso   1.00
+Cr24   Cr    0.33333   0.66667   0.50000   0.01267  Uiso   1.00
+I25    I     0.75000   0.50000   0.44151   0.01267  Uiso   1.00
+I26    I     0.50000   0.75000   0.44151   0.01267  Uiso   1.00
+I27    I     0.75000   0.75000   0.44151   0.01267  Uiso   1.00
+I28    I     0.50000   0.75000   0.55849   0.01267  Uiso   1.00
+I29    I     0.75000   0.50000   0.55849   0.01267  Uiso   1.00
+I30    I     0.75000   0.75000   0.55849   0.01267  Uiso   1.00
+Cr31   Cr    0.66667   0.83333   0.50000   0.01267  Uiso   1.00
+Cr32   Cr    0.83333   0.66667   0.50000   0.01267  Uiso   1.00
+loop_
+_geom_bond_atom_site_label_1
+_geom_bond_atom_site_label_2
+_geom_bond_distance
+_geom_bond_site_symmetry_2
+_ccdc_geom_bond_type
+I1     Cr8     2.005   .     S
+I1     Cr23    2.005   1_545 S
+I2     Cr16    2.005   1_455 S
+I2     Cr7     2.005   .     S
+I3     Cr8     2.005   .     S
+I3     Cr7     2.005   .     S
+I4     Cr7     2.005   .     S
+I4     Cr16    2.005   1_455 S
+I5     Cr23    2.005   1_545 S
+I5     Cr8     2.005   .     S
+I6     Cr7     2.005   .     S
+I6     Cr8     2.005   .     S
+Cr7    I17     2.005   .     S
+Cr7    I21     2.005   .     S
+Cr8    I10     2.005   .     S
+Cr8    I12     2.005   .     S
+I9     Cr16    2.005   .     S
+I9     Cr31    2.005   1_545 S
+I10    Cr15    2.005   .     S
+I11    Cr16    2.005   .     S
+I11    Cr15    2.005   .     S
+I12    Cr15    2.005   .     S
+I13    Cr31    2.005   1_545 S
+I13    Cr16    2.005   .     S
+I14    Cr15    2.005   .     S
+I14    Cr16    2.005   .     S
+Cr15   I25     2.005   .     S
+Cr15   I29     2.005   .     S
+Cr16   I2      2.005   1_655 S
+Cr16   I4      2.005   1_655 S
+I17    Cr24    2.005   .     S
+I18    Cr32    2.005   1_455 S
+I18    Cr23    2.005   .     S
+I19    Cr24    2.005   .     S
+I19    Cr23    2.005   .     S
+I20    Cr23    2.005   .     S
+I20    Cr32    2.005   1_455 S
+I21    Cr24    2.005   .     S
+I22    Cr23    2.005   .     S
+I22    Cr24    2.005   .     S
+Cr23   I1      2.005   1_565 S
+Cr23   I5      2.005   1_565 S
+Cr24   I26     2.005   .     S
+Cr24   I28     2.005   .     S
+I25    Cr32    2.005   .     S
+I26    Cr31    2.005   .     S
+I27    Cr32    2.005   .     S
+I27    Cr31    2.005   .     S
+I28    Cr31    2.005   .     S
+I29    Cr32    2.005   .     S
+I30    Cr31    2.005   .     S
+I30    Cr32    2.005   .     S
+Cr31   I9      2.005   1_565 S
+Cr31   I13     2.005   1_565 S
+Cr32   I18     2.005   1_655 S
+Cr32   I20     2.005   1_655 S

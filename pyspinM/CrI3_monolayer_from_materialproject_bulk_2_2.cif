@@ -1,0 +1,56 @@
+data_CrI3_monolayer_from_materialproject_bulk\(2)
+_audit_creation_date              2024-05-06
+_audit_creation_method            'Materials Studio'
+_symmetry_space_group_name_H-M    'P1'
+_symmetry_Int_Tables_number       1
+_symmetry_cell_setting            triclinic
+loop_
+_symmetry_equiv_pos_as_xyz
+  x,y,z
+_cell_length_a                    13.9370
+_cell_length_b                    13.9370
+_cell_length_c                    20.7559
+_cell_angle_alpha                 90.0000
+_cell_angle_beta                  90.0000
+_cell_angle_gamma                 120.0000
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_U_iso_or_equiv
+_atom_site_adp_type
+_atom_site_occupancy
+Cr1    Cr    0.16667   0.33333   0.50000   0.00000  Uiso   1.00
+Cr2    Cr    0.33333   0.16667   0.50000   0.00000  Uiso   1.00
+I3     I     0.17790  -0.00000   0.42463   0.00000  Uiso   1.00
+I4     I     0.00000   0.17790   0.42463   0.00000  Uiso   1.00
+I5     I     0.32210   0.32210   0.42463   0.00000  Uiso   1.00
+I6     I     0.00000   0.32210   0.57537   0.00000  Uiso   1.00
+I7     I     0.32210  -0.00000   0.57537   0.00000  Uiso   1.00
+I8     I     0.17790   0.17790   0.57537   0.00000  Uiso   1.00
+Cr9    Cr    0.66667   0.33333   0.50000   0.00000  Uiso   1.00
+Cr10   Cr    0.83333   0.16667   0.50000   0.00000  Uiso   1.00
+I11    I     0.67790  -0.00000   0.42463   0.00000  Uiso   1.00
+I12    I     0.50000   0.17790   0.42463   0.00000  Uiso   1.00
+I13    I     0.82210   0.32210   0.42463   0.00000  Uiso   1.00
+I14    I     0.50000   0.32210   0.57537   0.00000  Uiso   1.00
+I15    I     0.82210  -0.00000   0.57537   0.00000  Uiso   1.00
+I16    I     0.67790   0.17790   0.57537   0.00000  Uiso   1.00
+Cr17   Cr    0.16667   0.83333   0.50000   0.00000  Uiso   1.00
+Cr18   Cr    0.33333   0.66667   0.50000   0.00000  Uiso   1.00
+I19    I     0.17790   0.50000   0.42463   0.00000  Uiso   1.00
+I20    I     0.00000   0.67790   0.42463   0.00000  Uiso   1.00
+I21    I     0.32210   0.82210   0.42463   0.00000  Uiso   1.00
+I22    I     0.00000   0.82210   0.57537   0.00000  Uiso   1.00
+I23    I     0.32210   0.50000   0.57537   0.00000  Uiso   1.00
+I24    I     0.17790   0.67790   0.57537   0.00000  Uiso   1.00
+Cr25   Cr    0.66667   0.83333   0.50000   0.00000  Uiso   1.00
+Cr26   Cr    0.83333   0.66667   0.50000   0.00000  Uiso   1.00
+I27    I     0.67790   0.50000   0.42463   0.00000  Uiso   1.00
+I28    I     0.50000   0.67790   0.42463   0.00000  Uiso   1.00
+I29    I     0.82210   0.82210   0.42463   0.00000  Uiso   1.00
+I30    I     0.50000   0.82210   0.57537   0.00000  Uiso   1.00
+I31    I     0.82210   0.50000   0.57537   0.00000  Uiso   1.00
+I32    I     0.67790   0.67790   0.57537   0.00000  Uiso   1.00

@@ -1,0 +1,46 @@
+
+#======================================================================
+# CRYSTAL DATA
+#----------------------------------------------------------------------
+data_VESTA_phase_1
+
+_chemical_name_common                  '5yOhtAoR'
+_cell_length_a                         4.534200
+_cell_length_b                         4.534200
+_cell_length_c                         22.427000
+_cell_angle_alpha                      90.000000
+_cell_angle_beta                       90.000000
+_cell_angle_gamma                      90.000000
+_cell_volume                           461.076052
+_space_group_name_H-M_alt              'P 1'
+_space_group_IT_number                 1
+
+loop_
+_space_group_symop_operation_xyz
+   'x, y, z'
+
+loop_
+   _atom_site_label
+   _atom_site_occupancy
+   _atom_site_fract_x
+   _atom_site_fract_y
+   _atom_site_fract_z
+   _atom_site_adp_type
+   _atom_site_U_iso_or_equiv
+   _atom_site_type_symbol
+   Mn1        1.0     0.000000     0.500000     0.250000    Uiso  ? Mn
+   Mn2        1.0     0.500000     0.000000     0.250000    Uiso  ? Mn
+   Mn3        1.0     0.000000     0.500000     0.750000    Uiso  ? Mn
+   Mn4        1.0     0.500000     0.000000     0.750000    Uiso  ? Mn
+   Eu1        1.0     0.000000     0.000000     0.114790    Uiso  ? Eu
+   Eu2        1.0     0.000000     0.000000     0.885210    Uiso  ? Eu
+   Eu3        1.0     0.500000     0.500000     0.614790    Uiso  ? Eu
+   Eu4        1.0     0.500000     0.500000     0.385210    Uiso  ? Eu
+   Bi1        1.0     0.000000     0.500000     0.000000    Uiso  ? Bi
+   Bi2        1.0     0.500000     0.000000     0.000000    Uiso  ? Bi
+   Bi3        1.0     0.500000     0.000000     0.500000    Uiso  ? Bi
+   Bi4        1.0     0.000000     0.500000     0.500000    Uiso  ? Bi
+   Bi5        1.0     0.000000     0.000000     0.328720    Uiso  ? Bi
+   Bi6        1.0     0.000000     0.000000     0.671280    Uiso  ? Bi
+   Bi7        1.0     0.500000     0.500000     0.828720    Uiso  ? Bi
+   Bi8        1.0     0.500000     0.500000     0.171280    Uiso  ? Bi
