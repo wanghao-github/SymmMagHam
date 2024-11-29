@@ -9,6 +9,12 @@ from scipy.linalg import null_space, orth
 from itertools import combinations
 import os
 import shutil
+from pymatgen.core.structure import Structure
+from pymatgen.io.cif import CifWriter
+# import numpy as np
+# import os
+# import shutil
+
 def print_matrix(matrix):
     for i in range(matrix.shape[2]):
         print(matrix[:,:,i])
@@ -35,7 +41,7 @@ def find_and_store_bonds(structure, radius):
     bonds = []
     dr_tracker = {}
     total_neighbors = 0
-    magnetic_elements = {'Cu','Fe','Co', 'Cr', 'Mn','O', 'V', 'Ni'}
+    magnetic_elements = {'Cu','Fe','Co', 'Cr', 'Mn', 'V', 'Ni'}
     image_x = []
     image_y = []
     image_z = []
@@ -522,7 +528,7 @@ def get_symm_anti_mat(aMat,aSym):
     
     return smatStr, amatStr
 # cif_file_path = r'C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\YMn6Sn6_unitcell.cif'
-cif_file_path = r'C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\CrI3.cif'
+cif_file_path = r'/Users/haowang/Documents/Crystal structure/NiO.cif'
 # cif_file_path = r'C:\Users\wangh\OneDrive\Desktop\temp\Fe_Jij_oscillation\Fe_Bulk_jx.cif'
 # cif_file_path = r'C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\VO2P-4m2.cif'
 # cif_file_path = r'C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\CrI3_monolayer_from_materialproject_bulk.cif'
@@ -540,7 +546,7 @@ symmetry_dataset, result_structure = parse_and_symmetrize_structure(cif_file_pat
 # symmetry_dataset, _ = parse_and_symmetrize_structure(cif_file_path2)
 
 structure = deepcopy(result_structure)
-radius = 8
+radius = 4
 bonds_list, total_neighbors,super_cell_scaling = find_and_store_bonds(structure, radius)
 verification_result = verify_bonds_count(structure, bonds_list, total_neighbors)
 sorted_bonds = assign_idx_and_sort_bonds(bonds_list)
@@ -681,7 +687,7 @@ supercell = result_structure.copy()
 supercell.make_supercell(scaling_matrix)
 # print(supercell)
 
-supercell.to(filename=r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test2\POSCAR", fmt="poscar")
+supercell.to(filename=r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test6/POSCAR", fmt="poscar")
 
 bond_end_index_in_supercell = []
 for key, nested_dict in bonds_dict.items():
@@ -901,13 +907,9 @@ print("bond_end_idx_in_sc",bond_end_idx_in_sc)
 # aaaa=np.allclose(a1, -a2, atol=0.001)
 # print(aaaa)
 
-from pymatgen.core.structure import Structure
-from pymatgen.io.cif import CifWriter
-import numpy as np
-import os
-import shutil
 
-magnetic_elements = {'Cu', 'Fe', 'Co', 'Cr', 'Mn', 'O', 'V', 'Ni'}
+
+magnetic_elements = {'Cu', 'Fe', 'Co', 'Cr', 'Mn', 'V', 'Ni'}
 
 magnetic_atom_indices = [i for i, site in enumerate(supercell) if site.specie.symbol in magnetic_elements]
 
@@ -1008,14 +1010,14 @@ def generate_magmom_files(base_dir, start_atoms, end_atoms, all_combinations, to
                 with open(os.path.join(variant_dir, "INCAR"), 'w') as f:
                     f.writelines(modified_content)
                 copy_support_files(source_dir, variant_dir, support_files)
-base_dir = r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test3" 
-template_path = r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test3\INCAR"  # 模板文件路径
-source_dir = r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test3" 
+base_dir = r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test6" 
+template_path = r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test6/INCAR"  # 模板文件路径
+source_dir = r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test6" 
 magnetic_directions = {
     0: "5 0 0",
     1: "0 5 0",
     2: "0 0 5"
 }
 # Example usage
-#generate_magmom_files(base_dir, bond_start_idx_in_sc, bond_end_idx_in_sc, all_combination, total_atom_number, magnetic_directions, template_path, source_dir, magnetic_atom_indices)
+generate_magmom_files(base_dir, bond_start_idx_in_sc, bond_end_idx_in_sc, all_combination, total_atom_number, magnetic_directions, template_path, source_dir, magnetic_atom_indices)
 print(symmetry_dataset)

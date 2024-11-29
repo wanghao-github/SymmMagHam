@@ -9,6 +9,7 @@ from scipy.linalg import null_space, orth
 from itertools import combinations
 import os
 import shutil
+
 def print_matrix(matrix):
     for i in range(matrix.shape[2]):
         print(matrix[:,:,i])
@@ -511,16 +512,8 @@ def get_symm_anti_mat(aMat,aSym):
     print("Asymmetric Matrix Components D:\n", amatStr)
     
     return smatStr, amatStr
-# cif_file_path = r'C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\YMn6Sn6_unitcell.cif'
 cif_file_path = r'C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\CrI3.cif'
-# cif_file_path = r'C:\Users\wangh\OneDrive\Desktop\temp\Fe_Jij_oscillation\Fe_Bulk_jx.cif'
-# cif_file_path = r'C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\VO2P-4m2.cif'
-# cif_file_path = r'C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\CrI3_monolayer_from_materialproject_bulk.cif'
-# cif_file_path = r'C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\luvo.cif'
-# cif_file_path = r'C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\Fe.cif'
-# cif_file_path = r'C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\P42.cif'
-# cif_file_path = r'C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\Cs2CuCl4_opt.cif'
-# cif_file_path = r'C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\CrI3_monolayer_from_materialproject_bulk_2_2.cif'
+
 symmetry_dataset, result_structure = parse_and_symmetrize_structure(cif_file_path)
 
 structure = deepcopy(result_structure)
@@ -780,20 +773,20 @@ print(symmetry_dataset)
 
 
 
-c3 = symmetry_dataset['rotations'][4]
-c3inv = np.linalg.inv(c3)
-parajij = np.array([[-3.14097 ,    0      ,    0.239],[   0        ,    -2.748,    0],[    0.239,      0 ,        -3.13560]])
-aaa = np.dot(c3inv,np.dot(parajij,c3))
-# bbb = np.dot(parajij,c3)
-print(aaa)
+# c3 = symmetry_dataset['rotations'][4]
+# c3inv = np.linalg.inv(c3)
+# parajij = np.array([[-3.14097 ,    0      ,    0.239],[   0        ,    -2.748,    0],[    0.239,      0 ,        -3.13560]])
+# aaa = np.dot(c3inv,np.dot(parajij,c3))
+# # bbb = np.dot(parajij,c3)
+# print(aaa)
 
 
 
-test_m = np.array([[1,0.317, 0.759],[0.317 ,1.366 ,1.314],[0.759,1.314,1]]).T
-cc = np.array(       [[ 0, -1,  0],
-        [ 1, -1,  0],
-        [ 0,  0,  1]])
-ccinv = np.linalg.inv(cc)
+# test_m = np.array([[1,0.317, 0.759],[0.317 ,1.366 ,1.314],[0.759,1.314,1]]).T
+# cc = np.array(       [[ 0, -1,  0],
+#         [ 1, -1,  0],
+#         [ 0,  0,  1]])
+# ccinv = np.linalg.inv(cc)
 
-re = np.dot(ccinv,np.dot(test_m,cc))
-print(re)
+# re = np.dot(ccinv,np.dot(test_m,cc))
+# print(re)
