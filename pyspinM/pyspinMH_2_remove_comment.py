@@ -9,7 +9,11 @@ from scipy.linalg import null_space, orth
 from itertools import combinations
 import os
 import shutil
-
+from pymatgen.core.structure import Structure
+from pymatgen.io.cif import CifWriter
+# import numpy as np
+# import os
+# import shutil
 def print_matrix(matrix):
     for i in range(matrix.shape[2]):
         print(matrix[:,:,i])
@@ -257,7 +261,7 @@ def basic_sym_matrix(symOp,r,tol):
 
     M0_V = V0
 
-    print("M0_V",M0_V)
+    # print("M0_V",M0_V)
     norm_r = np.linalg.norm(r)
     if norm_r > 0:
         r = r / norm_r
@@ -512,73 +516,7 @@ def get_symm_anti_mat(aMat,aSym):
     print("Asymmetric Matrix Components D:\n", amatStr)
     
     return smatStr, amatStr
-cif_file_path = r'C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\CrI3.cif'
 
-symmetry_dataset, result_structure = parse_and_symmetrize_structure(cif_file_path)
-
-structure = deepcopy(result_structure)
-radius = 5
-bonds_list, total_neighbors,super_cell_scaling = find_and_store_bonds(structure, radius)
-verification_result = verify_bonds_count(structure, bonds_list, total_neighbors)
-sorted_bonds = assign_idx_and_sort_bonds(bonds_list)
-sym_map_dict = atom_symmetry_mapping(symmetry_dataset['std_positions'],symmetry_dataset['rotations'],symmetry_dataset['translations'])
-
-classified_groups = classify_bonds_by_symmetry(sorted_bonds, sym_map_dict,symmetry_dataset)
-print_grouped_bonds(classified_groups)
-
-bonds_dict = reset_idx_subidx_dict(classified_groups)
-
-center_pos = center_of_bond(structure,bonds_dict)
-# print(np.shape(center_pos[4][1]))
-print(result_structure.lattice)
-print(bonds_dict)
-
-the_bond_index = 1
-the_bond_subindex =3
-dr = bonds_dict[the_bond_index][the_bond_subindex][2]
-lattice_matrix = result_structure.lattice.matrix.T
-product = lattice_matrix @ dr
-
-point_rot = point_Op(symmetry_dataset['rotations'],symmetry_dataset['translations'],center_pos[the_bond_index][the_bond_subindex])
-pOp = point_Op_in_xyz(lattice_matrix,point_rot)
-
-aMat, aSym = basic_sym_matrix(pOp, product, 1e-4)
-
-print("aMat is", aMat)
-print("aSym is", aSym)
-
-aMatS = aMat[:, :, ~aSym]
-
-# print(len(pOp))
-
-get_symm_anti_mat(aMat,aSym)
-
-super_cell_scaling_list = list(super_cell_scaling)
-super_cell_scaling_list = [x if x != 0 else 1 for x in super_cell_scaling_list]
-
-scaling_matrix = np.array([[super_cell_scaling_list[0], 0, 0], [0, super_cell_scaling_list[1], 0], [ 0, 0,super_cell_scaling_list[2]]])
-
-print(scaling_matrix)
-supercell = result_structure.copy()
-supercell.make_supercell(scaling_matrix)
-# print(supercell)
-
-supercell.to(filename=r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test2\POSCAR", fmt="poscar")
-
-bond_end_index_in_supercell = []
-for key, nested_dict in bonds_dict.items():
-    for subkey, value in nested_dict.items():
-        # if subkey == 1:
-        if subkey == 3:
-            bond_end_index_in_supercell.append((value[0],value[2]))  # 第四个元素的索引是3
-bond_start_index_in_supercell = []
-for key, nested_dict in bonds_dict.items():
-    for subkey, value in nested_dict.items():
-        # if subkey == 1:
-        if subkey == 3:
-            bond_start_index_in_supercell.append((value[0],np.array([0,0,0]))) 
-
-print(bond_end_index_in_supercell)
 def map_atoms_to_supercell(unit_cell, supercell, index_displacements):
     mapped_indices = []
     for index, displacement in index_displacements:
@@ -600,14 +538,6 @@ def map_atoms_to_supercell(unit_cell, supercell, index_displacements):
         mapped_indices.append((index, closest_index))
     return mapped_indices
 
-bond_end_idx_in_sc    = map_atoms_to_supercell(result_structure,supercell,bond_end_index_in_supercell)
-bond_start_idx_in_sc  = map_atoms_to_supercell(result_structure,supercell,bond_start_index_in_supercell)
-
-cif_writer = CifWriter(supercell)
-cif_writer.write_file('supercell.cif')
-
-print(aMat.shape[2])
-
 def find_independent_combinations(aMat):
     n_slices = aMat.shape[2]
     indices = [(i, j) for i in range(3) for j in range(3)]
@@ -624,20 +554,12 @@ def find_independent_combinations(aMat):
             return combination, coeff_matrix
 
     return None, None  # 如果没有找到任何线性独立的组合
-print(aMatS)
-combination, coeff_matrix = find_independent_combinations(aMatS)
-
-if combination:
-    print("找到线性独立的元素组合位置:", combination)
-    print("对应的系数矩阵:\n", coeff_matrix)
-else:
-    print("没有找到线性独立的元素组合")
 
 def get_all_combination(result_structure,symmetry_dataset,center_pos):
     all_combination = []
     for i in range(len(bonds_dict)):
         the_bond_index = i+1
-        the_bond_subindex =3
+        the_bond_subindex = 1
         dr = bonds_dict[the_bond_index][the_bond_subindex][2]
         lattice_matrix = result_structure.lattice.matrix.T
         product = lattice_matrix @ dr
@@ -649,23 +571,6 @@ def get_all_combination(result_structure,symmetry_dataset,center_pos):
         combination, coeff_matrix = find_independent_combinations(aMatS)
         all_combination.append(combination)
     return all_combination
-all_combination = get_all_combination(result_structure,symmetry_dataset,center_pos)
-print(all_combination)
-
-print("bond_start_idx_in_sc",bond_start_idx_in_sc)
-print("bond_end_idx_in_sc",bond_end_idx_in_sc)
-
-from pymatgen.core.structure import Structure
-from pymatgen.io.cif import CifWriter
-import numpy as np
-import os
-import shutil
-
-magnetic_elements = {'Cu', 'Fe', 'Co', 'Cr', 'Mn', 'O', 'V', 'Ni'}
-
-magnetic_atom_indices = [i for i, site in enumerate(supercell) if site.specie.symbol in magnetic_elements]
-
-print("Magnetic atom indices:", magnetic_atom_indices)
 
 def flip_direction(direction):
     """
@@ -720,10 +625,6 @@ def get_magmom_tags(start_atoms, end_atoms, all_combinations, total_atom_number,
                 magmom_tags_list.append(' '.join(magmom_array_temp))
     return magmom_tags_list
 
-# Example usage
-total_atom_number = supercell.num_sites
-magmom_tags = get_magmom_tags(bond_start_idx_in_sc, bond_end_idx_in_sc, all_combination, total_atom_number, magnetic_atom_indices)
-
 def ensure_dir(directory):
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -758,9 +659,118 @@ def generate_magmom_files(base_dir, start_atoms, end_atoms, all_combinations, to
                 with open(os.path.join(variant_dir, "INCAR"), 'w') as f:
                     f.writelines(modified_content)
                 copy_support_files(source_dir, variant_dir, support_files)
-base_dir = r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test5" 
-template_path = r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test5\INCAR"  # 模板文件路径
-source_dir = r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test5" 
+
+radius = 4
+cif_file_path = r'/Users/haowang/Documents/Crystal structure/NiO.cif'
+
+symmetry_dataset, result_structure = parse_and_symmetrize_structure(cif_file_path)
+structure = deepcopy(result_structure)
+bonds_list, total_neighbors,super_cell_scaling = find_and_store_bonds(structure, radius)
+verification_result = verify_bonds_count(structure, bonds_list, total_neighbors)
+sorted_bonds = assign_idx_and_sort_bonds(bonds_list)
+sym_map_dict = atom_symmetry_mapping(symmetry_dataset['std_positions'],symmetry_dataset['rotations'],symmetry_dataset['translations'])
+classified_groups = classify_bonds_by_symmetry(sorted_bonds, sym_map_dict,symmetry_dataset)
+print_grouped_bonds(classified_groups)
+# print(classified_groups)
+bonds_dict = reset_idx_subidx_dict(classified_groups)
+center_pos = center_of_bond(structure,bonds_dict)
+# print(np.shape(center_pos[4][1]))
+print(result_structure.lattice)
+print(bonds_dict)
+
+the_bond_index = 1
+the_bond_subindex = 24
+dr = bonds_dict[the_bond_index][the_bond_subindex][2]
+lattice_matrix = result_structure.lattice.matrix.T
+product = lattice_matrix @ dr
+
+for the_bond_index,sub_bonds_dict in bonds_dict.items():
+    for the_bond_subindex, bond_properties in sub_bonds_dict.items():
+        
+        print(f"键长第{the_bond_index}组 一共有个键")
+        point_rot = point_Op(symmetry_dataset['rotations'],symmetry_dataset['translations'],center_pos[the_bond_index][the_bond_subindex])
+        pOp = point_Op_in_xyz(lattice_matrix,point_rot)
+        aMat, aSym = basic_sym_matrix(pOp, product, 1e-4)
+
+        # print("aMat is", aMat)
+        # print("aSym is", aSym)
+
+        aMatS = aMat[:, :, ~aSym]
+
+        get_symm_anti_mat(aMat,aSym)
+
+
+point_rot = point_Op(symmetry_dataset['rotations'],symmetry_dataset['translations'],center_pos[the_bond_index][the_bond_subindex])
+pOp = point_Op_in_xyz(lattice_matrix,point_rot)
+aMat, aSym = basic_sym_matrix(pOp, product, 1e-4)
+
+print("aMat is", aMat)
+print("aSym is", aSym)
+
+aMatS = aMat[:, :, ~aSym]
+
+get_symm_anti_mat(aMat,aSym)
+
+super_cell_scaling_list = list(super_cell_scaling)
+super_cell_scaling_list = [x if x != 0 else 1 for x in super_cell_scaling_list]
+
+scaling_matrix = np.array([[super_cell_scaling_list[0], 0, 0], [0, super_cell_scaling_list[1], 0], [ 0, 0,super_cell_scaling_list[2]]])
+
+print(scaling_matrix)
+supercell = result_structure.copy()
+supercell.make_supercell(scaling_matrix)
+# print(supercell)
+
+supercell.to(filename=r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test6/POSCAR", fmt="poscar")
+
+bond_end_index_in_supercell = []
+for key, nested_dict in bonds_dict.items():
+    for subkey, value in nested_dict.items():
+        # if subkey == 1:
+        if subkey == 1:
+            bond_end_index_in_supercell.append((value[0],value[2]))  # 第四个元素的索引是3
+bond_start_index_in_supercell = []
+for key, nested_dict in bonds_dict.items():
+    for subkey, value in nested_dict.items():
+        # if subkey == 1:
+        if subkey == 1:
+            bond_start_index_in_supercell.append((value[0],np.array([0,0,0]))) 
+
+print(bond_end_index_in_supercell)
+
+bond_end_idx_in_sc    = map_atoms_to_supercell(result_structure,supercell,bond_end_index_in_supercell)
+bond_start_idx_in_sc  = map_atoms_to_supercell(result_structure,supercell,bond_start_index_in_supercell)
+
+cif_writer = CifWriter(supercell)
+cif_writer.write_file('supercell.cif')
+
+print(aMat.shape[2])
+
+all_combination = get_all_combination(result_structure,symmetry_dataset,center_pos)
+print(all_combination)
+print(aMatS)
+combination, coeff_matrix = find_independent_combinations(aMatS)
+
+if combination:
+    print("找到线性独立的元素组合位置:", combination)
+    print("对应的系数矩阵:\n", coeff_matrix)
+else:
+    print("没有找到线性独立的元素组合")
+
+print("bond_start_idx_in_sc",bond_start_idx_in_sc)
+print("bond_end_idx_in_sc",bond_end_idx_in_sc)
+
+magnetic_elements = {'Cu', 'Fe', 'Co', 'Cr', 'Mn', 'V', 'Ni'}
+magnetic_atom_indices = [i for i, site in enumerate(supercell) if site.specie.symbol in magnetic_elements]
+
+print("Magnetic atom indices:", magnetic_atom_indices)
+
+total_atom_number = supercell.num_sites
+magmom_tags = get_magmom_tags(bond_start_idx_in_sc, bond_end_idx_in_sc, all_combination, total_atom_number, magnetic_atom_indices)
+
+base_dir = r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test6" 
+template_path = r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test6/INCAR"  # 模板文件路径
+source_dir = r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test6" 
 magnetic_directions = {
     0: "5 0 0",
     1: "0 5 0",
@@ -768,25 +778,4 @@ magnetic_directions = {
 }
 # Example usage
 generate_magmom_files(base_dir, bond_start_idx_in_sc, bond_end_idx_in_sc, all_combination, total_atom_number, magnetic_directions, template_path, source_dir, magnetic_atom_indices)
-print(symmetry_dataset)
-
-
-
-
-# c3 = symmetry_dataset['rotations'][4]
-# c3inv = np.linalg.inv(c3)
-# parajij = np.array([[-3.14097 ,    0      ,    0.239],[   0        ,    -2.748,    0],[    0.239,      0 ,        -3.13560]])
-# aaa = np.dot(c3inv,np.dot(parajij,c3))
-# # bbb = np.dot(parajij,c3)
-# print(aaa)
-
-
-
-# test_m = np.array([[1,0.317, 0.759],[0.317 ,1.366 ,1.314],[0.759,1.314,1]]).T
-# cc = np.array(       [[ 0, -1,  0],
-#         [ 1, -1,  0],
-#         [ 0,  0,  1]])
-# ccinv = np.linalg.inv(cc)
-
-# re = np.dot(ccinv,np.dot(test_m,cc))
-# print(re)
+# print(symmetry_dataset)
