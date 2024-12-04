@@ -660,8 +660,8 @@ def generate_magmom_files(base_dir, start_atoms, end_atoms, all_combinations, to
                     f.writelines(modified_content)
                 copy_support_files(source_dir, variant_dir, support_files)
 
-radius = 4
-cif_file_path = r'/Users/haowang/Documents/Crystal structure/NiO.cif'
+radius = 12
+cif_file_path = r'/Users/haowang/Documents/Crystal structure/CrI3.cif'
 
 symmetry_dataset, result_structure = parse_and_symmetrize_structure(cif_file_path)
 structure = deepcopy(result_structure)
@@ -679,25 +679,25 @@ print(result_structure.lattice)
 print(bonds_dict)
 
 the_bond_index = 1
-the_bond_subindex = 24
+the_bond_subindex = 1
 dr = bonds_dict[the_bond_index][the_bond_subindex][2]
 lattice_matrix = result_structure.lattice.matrix.T
 product = lattice_matrix @ dr
 
-for the_bond_index,sub_bonds_dict in bonds_dict.items():
-    for the_bond_subindex, bond_properties in sub_bonds_dict.items():
+# for the_bond_index,sub_bonds_dict in bonds_dict.items():
+#     for the_bond_subindex, bond_properties in sub_bonds_dict.items():
         
-        print(f"键长第{the_bond_index}组 一共有个键")
-        point_rot = point_Op(symmetry_dataset['rotations'],symmetry_dataset['translations'],center_pos[the_bond_index][the_bond_subindex])
-        pOp = point_Op_in_xyz(lattice_matrix,point_rot)
-        aMat, aSym = basic_sym_matrix(pOp, product, 1e-4)
+#         print(f"键长第{the_bond_index}组 一共有个键")
+#         point_rot = point_Op(symmetry_dataset['rotations'],symmetry_dataset['translations'],center_pos[the_bond_index][the_bond_subindex])
+#         pOp = point_Op_in_xyz(lattice_matrix,point_rot)
+#         aMat, aSym = basic_sym_matrix(pOp, product, 1e-4)
 
-        # print("aMat is", aMat)
-        # print("aSym is", aSym)
+#         # print("aMat is", aMat)
+#         # print("aSym is", aSym)
 
-        aMatS = aMat[:, :, ~aSym]
+#         aMatS = aMat[:, :, ~aSym]
 
-        get_symm_anti_mat(aMat,aSym)
+#         get_symm_anti_mat(aMat,aSym)
 
 
 point_rot = point_Op(symmetry_dataset['rotations'],symmetry_dataset['translations'],center_pos[the_bond_index][the_bond_subindex])
@@ -721,7 +721,7 @@ supercell = result_structure.copy()
 supercell.make_supercell(scaling_matrix)
 # print(supercell)
 
-supercell.to(filename=r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test6/POSCAR", fmt="poscar")
+supercell.to(filename=r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test7/POSCAR", fmt="poscar")
 
 bond_end_index_in_supercell = []
 for key, nested_dict in bonds_dict.items():
@@ -768,9 +768,9 @@ print("Magnetic atom indices:", magnetic_atom_indices)
 total_atom_number = supercell.num_sites
 magmom_tags = get_magmom_tags(bond_start_idx_in_sc, bond_end_idx_in_sc, all_combination, total_atom_number, magnetic_atom_indices)
 
-base_dir = r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test6" 
-template_path = r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test6/INCAR"  # 模板文件路径
-source_dir = r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test6" 
+base_dir = r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test7" 
+template_path = r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test7/INCAR"  # 模板文件路径
+source_dir = r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test7" 
 magnetic_directions = {
     0: "5 0 0",
     1: "0 5 0",
