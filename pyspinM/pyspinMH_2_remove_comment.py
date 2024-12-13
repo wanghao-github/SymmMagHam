@@ -40,7 +40,7 @@ def find_and_store_bonds(structure, radius):
     bonds = []
     dr_tracker = {}
     total_neighbors = 0
-    magnetic_elements = {'Cu','Fe','Co', 'Cr', 'Mn','O', 'V', 'Ni'}
+    magnetic_elements = {'Cu','Fe','Co', 'Cr', 'Mn', 'V', 'Ni'}
     image_x = []
     image_y = []
     image_z = []
@@ -517,14 +517,14 @@ def get_symm_anti_mat(aMat,aSym):
     
     return smatStr, amatStr
 
-def map_atoms_to_supercell(unit_cell, supercell, index_displacements):
+def map_atoms_to_supercell(unit_cell, supercell, atoms_need_mapping):
     mapped_indices = []
-    for index, displacement in index_displacements:
+    for index, displacement in atoms_need_mapping:
         atom_coords = unit_cell[index].coords
         displacement_coords = np.dot(unit_cell.lattice.matrix.T,displacement)
-        print(displacement_coords)
+        print("需要位移的矢量",displacement_coords)
         new_coords = atom_coords + displacement_coords
-        # print(new_coords)
+        print("新坐标位置",new_coords)
         frac_in_supercell = np.dot(np.linalg.inv(supercell.lattice.matrix.T),new_coords)
         frac_in_supercell_new = np.mod(frac_in_supercell, 1.0)
         closest_index = None
@@ -545,6 +545,7 @@ def find_independent_combinations(aMat):
     # 遍历所有可能的组合，选择 n_slices 个不同的位置
     for combination in combinations(indices, n_slices):
         # 构建系数矩阵
+        print("现在combination是",combination)
         coeff_matrix = np.zeros((n_slices, n_slices))
         for row, (i, j) in enumerate(combination):
             coeff_matrix[row, :] = aMat[i, j, :]
@@ -557,6 +558,8 @@ def find_independent_combinations(aMat):
 
 def get_all_combination(result_structure,symmetry_dataset,center_pos):
     all_combination = []
+    all_coeff_matrix = []
+    all_aMatS = []
     for i in range(len(bonds_dict)):
         the_bond_index = i+1
         the_bond_subindex = 1
@@ -570,14 +573,34 @@ def get_all_combination(result_structure,symmetry_dataset,center_pos):
         aMatS = aMat[:, :, ~aSym]
         combination, coeff_matrix = find_independent_combinations(aMatS)
         all_combination.append(combination)
-    return all_combination
+        all_coeff_matrix.append(coeff_matrix)
+        all_aMatS.append(aMatS)
+    return all_combination,all_coeff_matrix,all_aMatS
 
-def flip_direction(direction):
+def save_indices_and_coeff_matrix(all_combination,all_coeff_matrix,all_aMatS):
+    record = []
+    for i in range(len(all_combination)):
+        print(all_combination[i])
+        print(all_coeff_matrix[i])
+        print(all_aMatS[i])
+        record.append({
+                "combination": all_combination[i],
+                "coeff_matrix": all_coeff_matrix[i].tolist(),  # 保存为列表
+                "values": ["待计算"] * all_aMatS[i].shape[2]  # 占位符
+            })
+    with open(output_file, "w") as f:
+        json.dump(record, f, indent=4)
+    print(f"信息已保存到 {output_file}")
+    # pass
+
+
+
+def flip_mag_direction(mag_direction):
     """
-    Flip the sign of the first non-zero component in the direction.
+    Flip the sign of the first non-zero component in the mag_direction.
     """
-    # Split the direction string into components
-    components = direction.split()
+    # Split the mag_direction string into components
+    components = mag_direction.split()
     # Flip the first non-zero component
     flipped = []
     flipped_sign = False
@@ -589,17 +612,17 @@ def flip_direction(direction):
             flipped.append(component)
     return " ".join(flipped)
 
-def generate_magmom_variants(start_direction, end_direction):
-    variants = []
+def generate_four_states_magmom(start_direction, end_direction):
+    generate_four_states_config = []
     # Original directions
-    variants.append((start_direction, end_direction))
-    # Flip end direction
-    variants.append((start_direction, flip_direction(end_direction)))
-    # Flip start direction
-    variants.append((flip_direction(start_direction), end_direction))
+    generate_four_states_config.append((start_direction, end_direction))
+    # Flip end mag_direction
+    generate_four_states_config.append((start_direction, flip_mag_direction(end_direction)))
+    # Flip start mag_direction
+    generate_four_states_config.append((flip_mag_direction(start_direction), end_direction))
     # Flip both directions
-    variants.append((flip_direction(start_direction), flip_direction(end_direction)))
-    return variants
+    generate_four_states_config.append((flip_mag_direction(start_direction), flip_mag_direction(end_direction)))
+    return generate_four_states_config
 
 def get_magmom_tags(start_atoms, end_atoms, all_combinations, total_atom_number, magnetic_atom_indices):
     magnetic_directions = {
@@ -610,18 +633,18 @@ def get_magmom_tags(start_atoms, end_atoms, all_combinations, total_atom_number,
     magmom_tags_list = []
     # Generate MAGMOM tags for each pair
     for i, (start_atom, end_atom) in enumerate(zip(start_atoms, end_atoms)):
-        # Set default direction based on whether the atom is magnetic or not
+        # Set default mag_direction based on whether the atom is magnetic or not
         magmom_array = ["0 0 1" if idx in magnetic_atom_indices else "0 0 0" for idx in range(total_atom_number)]
         for combination in all_combinations[i]:
             start_direction = magnetic_directions[combination[0]]
             end_direction = magnetic_directions[combination[1]]
-            # Generate variants
-            variants = generate_magmom_variants(start_direction, end_direction) 
-            for variant in variants:
-                # Reset magmom_array to default before applying new variant
+            # Generate generate_four_states_config
+            generate_four_states_config = generate_four_states_magmom(start_direction, end_direction) 
+            for each_state in generate_four_states_config:
+                # Reset magmom_array to default before applying new each_state
                 magmom_array_temp = magmom_array.copy()
-                magmom_array_temp[start_atom[1]] = variant[0]
-                magmom_array_temp[end_atom[1]] = variant[1]
+                magmom_array_temp[start_atom[1]] = each_state[0]
+                magmom_array_temp[end_atom[1]] = each_state[1]
                 magmom_tags_list.append(' '.join(magmom_array_temp))
     return magmom_tags_list
 
@@ -635,33 +658,42 @@ def copy_support_files(source_dir, target_dir, files):
         if os.path.exists(src_file_path):
             shutil.copy(src_file_path, target_dir)
 
-def generate_magmom_files(base_dir, start_atoms, end_atoms, all_combinations, total_atom_number, magnetic_directions, template_path, source_dir, magnetic_atom_indices):
-    with open(template_path, 'r') as file:
-        template_content = file.readlines()
-    support_files = ['KPOINTS', 'POTCAR', 'POSCAR', 'subjob']
+def generate_magmom_files(base_dir, start_atoms, end_atoms, all_combinations, total_atom_number, magnetic_directions, template_INCAR_path, source_dir, magnetic_atom_indices):
+    map_number_xyz = {
+        0: "x",
+        1: "y",
+        2: "z"
+    }
+    with open(template_INCAR_path, 'r') as file:
+        template_INCAR = file.readlines()
+    other_input_files = ['KPOINTS', 'POTCAR', 'POSCAR', 'subjob']
     for i, (start_atom, end_atom) in enumerate(zip(start_atoms, end_atoms)):
         bond_dir = os.path.join(base_dir, f"bonds_with_diff_sym{i+1}")
         ensure_dir(bond_dir)
         for j, combination in enumerate(all_combinations[i]):
-            combination_dir = os.path.join(bond_dir, f"diff_J{j+1}")
+            # print("第",j,"个combination是",combination[0],"和",combination[1])
+            # combination_dir = os.path.join(bond_dir, f"diff_J{j+1}")
+            # combination_dir = os.path.join(bond_dir, f"J{combination[0]}{combination[1]}")
+            combination_dir = os.path.join(bond_dir, f"J{map_number_xyz[combination[0]]}{map_number_xyz[combination[1]]}")
             ensure_dir(combination_dir)
-            # Set default direction based on whether the atom is magnetic or not
+            # Set default mag_direction based on whether the atom is magnetic or not
             magmom_array = ["0 0 5" if idx in magnetic_atom_indices else "0 0 0" for idx in range(total_atom_number)]
-            variants = generate_magmom_variants(magnetic_directions[combination[0]], magnetic_directions[combination[1]])
-            for k, variant in enumerate(variants):
-                variant_dir = os.path.join(combination_dir, str(k+1))
-                ensure_dir(variant_dir)
-                magmom_array[start_atom[1]] = variant[0]
-                magmom_array[end_atom[1]] = variant[1]
+            generate_four_states_config = generate_four_states_magmom(magnetic_directions[combination[0]], magnetic_directions[combination[1]])
+            for k, each_state in enumerate(generate_four_states_config):
+                # four_states_dir = os.path.join(combination_dir, str(k+1))
+                four_states_dir = os.path.join(combination_dir, str(k+1))
+                ensure_dir(four_states_dir)
+                magmom_array[start_atom[1]] = each_state[0]
+                magmom_array[end_atom[1]] = each_state[1]
                 magmom_string = ' '.join(magmom_array)
-                modified_content = [line if not line.strip().startswith('M_CONSTR') else f"M_CONSTR = {magmom_string}\n" for line in template_content]
-                modified_content.append(f"\nMAGMOM = {magmom_string}\n")
-                with open(os.path.join(variant_dir, "INCAR"), 'w') as f:
-                    f.writelines(modified_content)
-                copy_support_files(source_dir, variant_dir, support_files)
+                modified_INCAR_content = [line if not line.strip().startswith('M_CONSTR') else f"M_CONSTR = {magmom_string}\n" for line in template_INCAR]
+                modified_INCAR_content.append(f"\nMAGMOM = {magmom_string}\n")
+                with open(os.path.join(four_states_dir, "INCAR"), 'w') as f:
+                    f.writelines(modified_INCAR_content)
+                copy_support_files(source_dir, four_states_dir, other_input_files)
 
-radius = 12
-cif_file_path = r'/Users/haowang/Documents/Crystal structure/CrI3.cif'
+radius = 5
+cif_file_path = r'C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\Fe.cif'
 
 symmetry_dataset, result_structure = parse_and_symmetrize_structure(cif_file_path)
 structure = deepcopy(result_structure)
@@ -721,33 +753,44 @@ supercell = result_structure.copy()
 supercell.make_supercell(scaling_matrix)
 # print(supercell)
 
-supercell.to(filename=r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test7/POSCAR", fmt="poscar")
+supercell.sort()
+print(supercell)
 
-bond_end_index_in_supercell = []
+
+supercell.to(filename=r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test9\POSCAR", fmt="poscar")
+
+bond_end_index_in_unitcell = []
 for key, nested_dict in bonds_dict.items():
     for subkey, value in nested_dict.items():
         # if subkey == 1:
         if subkey == 1:
-            bond_end_index_in_supercell.append((value[0],value[2]))  # 第四个元素的索引是3
-bond_start_index_in_supercell = []
+            bond_end_index_in_unitcell.append((value[0],value[2]))  # 第四个元素的索引是3
+bond_start_index_in_unitcell = []
 for key, nested_dict in bonds_dict.items():
     for subkey, value in nested_dict.items():
         # if subkey == 1:
         if subkey == 1:
-            bond_start_index_in_supercell.append((value[0],np.array([0,0,0]))) 
+            bond_start_index_in_unitcell.append((value[0],np.array([0,0,0]))) 
+            
+print("单胞中所有对称组的第一个键开头原子的编号和平移矢量",bond_start_index_in_unitcell)
+print("单胞中所有对称组的第一个键末尾原子的编号和平移矢量",bond_end_index_in_unitcell)
+## 我们需要知道这个特定的键在超胞中的编号是多少(需要知道俩原子的编号)
 
-print(bond_end_index_in_supercell)
 
-bond_end_idx_in_sc    = map_atoms_to_supercell(result_structure,supercell,bond_end_index_in_supercell)
-bond_start_idx_in_sc  = map_atoms_to_supercell(result_structure,supercell,bond_start_index_in_supercell)
+## n个元组 每个元组是第n组对称键的起始和结尾坐标
+bond_end_idx_in_sc    = map_atoms_to_supercell(result_structure,supercell,bond_end_index_in_unitcell)
+bond_start_idx_in_sc  = map_atoms_to_supercell(result_structure,supercell,bond_start_index_in_unitcell)
+
+print("所有对称组中第一个键的起始原子在超胞中的编号是",bond_start_idx_in_sc)
+print("所有对称组中第一个键的终止原子在超胞中的编号是",bond_end_idx_in_sc)
 
 cif_writer = CifWriter(supercell)
 cif_writer.write_file('supercell.cif')
 
 print(aMat.shape[2])
 
-all_combination = get_all_combination(result_structure,symmetry_dataset,center_pos)
-print(all_combination)
+all_combination,all_coeff_matrix ,all_aMatS= get_all_combination(result_structure,symmetry_dataset,center_pos)
+print("all_combination 是: ",all_combination)
 print(aMatS)
 combination, coeff_matrix = find_independent_combinations(aMatS)
 
@@ -766,16 +809,17 @@ magnetic_atom_indices = [i for i, site in enumerate(supercell) if site.specie.sy
 print("Magnetic atom indices:", magnetic_atom_indices)
 
 total_atom_number = supercell.num_sites
-magmom_tags = get_magmom_tags(bond_start_idx_in_sc, bond_end_idx_in_sc, all_combination, total_atom_number, magnetic_atom_indices)
+# magmom_tags = get_magmom_tags(bond_start_idx_in_sc, bond_end_idx_in_sc, all_combination, total_atom_number, magnetic_atom_indices)
 
-base_dir = r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test7" 
-template_path = r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test7/INCAR"  # 模板文件路径
-source_dir = r"/Users/haowang/Documents/Codes/SymmMagHam/pyspinM/test7" 
+base_dir = r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test9" 
+template_INCAR_path = r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test9\INCAR"  # 模板文件路径
+source_dir = r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test9" 
 magnetic_directions = {
     0: "5 0 0",
     1: "0 5 0",
     2: "0 0 5"
 }
 # Example usage
-generate_magmom_files(base_dir, bond_start_idx_in_sc, bond_end_idx_in_sc, all_combination, total_atom_number, magnetic_directions, template_path, source_dir, magnetic_atom_indices)
+generate_magmom_files(base_dir, bond_start_idx_in_sc, bond_end_idx_in_sc, all_combination, total_atom_number, magnetic_directions, template_INCAR_path, source_dir, magnetic_atom_indices)
 # print(symmetry_dataset)
+save_indices_and_coeff_matrix(all_combination,all_coeff_matrix,all_aMatS)

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project>
+  <Version>19.1</Version>
+  <Reference>{C09B3C6F-E0CA-485D-902E-6618158D2950}</Reference>
+  <DocumentManager>
+    <Document>
+      <ID>{8A8D7C82-6CCA-4017-94CF-E986BCAC02F6}</ID>
+      <Paths>1</Paths>
+      <URL>.\NiO.xsd</URL>
+      <Property>
+        <Name>Visible</Name>
+        <Type>11</Type>
+        <Value>-1</Value>
+      </Property>
+    </Document>
+  </DocumentManager>
+  <ViewRegistry>
+    <Frame>
+      <Active>true</Active>
+      <Left>0</Left>
+      <Top>0</Top>
+      <Width>507</Width>
+      <Height>221</Height>
+      <Maximized>true</Maximized>
+      <Minimized>false</Minimized>
+      <View>
+        <Active>true</Active>
+        <DocumentID>{8A8D7C82-6CCA-4017-94CF-E986BCAC02F6}</DocumentID>
+        <Type>SVViewer3D.Viewer3DControl</Type>
+      </View>
+    </Frame>
+  </ViewRegistry>
+  <DocumentEventManager>
+  </DocumentEventManager>
+</Project>
