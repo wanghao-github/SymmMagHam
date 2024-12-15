@@ -585,12 +585,12 @@ def save_indices_and_coeff_matrix(all_combination,all_coeff_matrix,all_aMatS):
         print(all_aMatS[i])
         record.append({
                 "combination": all_combination[i],
-                "coeff_matrix": all_coeff_matrix[i].tolist(),  # 保存为列表
-                "values": ["待计算"] * all_aMatS[i].shape[2]  # 占位符
+                "coeff_matrix": all_coeff_matrix[i].tolist(),
+                "values": [" "] * all_aMatS[i].shape[2]
             })
-    with open(output_file, "w") as f:
+    with open(, "w") as f:
         json.dump(record, f, indent=4)
-    print(f"信息已保存到 {output_file}")
+    print(f" {output_file}")
     # pass
 
 
@@ -694,7 +694,7 @@ def generate_magmom_files(base_dir, start_atoms, end_atoms, all_combinations, to
 
 radius = 5
 cif_file_path = r'C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\Fe.cif'
-
+json_file_path = r'C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\.json'
 symmetry_dataset, result_structure = parse_and_symmetrize_structure(cif_file_path)
 structure = deepcopy(result_structure)
 bonds_list, total_neighbors,super_cell_scaling = find_and_store_bonds(structure, radius)
