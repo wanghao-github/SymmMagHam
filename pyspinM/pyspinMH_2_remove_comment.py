@@ -776,7 +776,7 @@ print("单胞中所有对称组的第一个键开头原子的编号和平移矢�
 print("单胞中所有对称组的第一个键末尾原子的编号和平移矢量",bond_end_index_in_unitcell)
 ## 我们需要知道这个特定的键在超胞中的编号是多少(需要知道俩原子的编号)
 
-
+ 
 ## n个元组 每个元组是第n组对称键的起始和结尾坐标
 bond_end_idx_in_sc    = map_atoms_to_supercell(result_structure,supercell,bond_end_index_in_unitcell)
 bond_start_idx_in_sc  = map_atoms_to_supercell(result_structure,supercell,bond_start_index_in_unitcell)
