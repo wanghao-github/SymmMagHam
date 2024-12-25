@@ -11,6 +11,7 @@ import os
 import shutil
 from pymatgen.core.structure import Structure
 from pymatgen.io.cif import CifWriter
+import json
 # import numpy as np
 # import os
 # import shutil
@@ -577,21 +578,22 @@ def get_all_combination(result_structure,symmetry_dataset,center_pos):
         all_aMatS.append(aMatS)
     return all_combination,all_coeff_matrix,all_aMatS
 
-def save_indices_and_coeff_matrix(all_combination,all_coeff_matrix,all_aMatS):
+def save_indices_and_coeff_matrix(base_dir,all_combination,all_coeff_matrix,all_aMatS):
     record = []
     for i in range(len(all_combination)):
         print(all_combination[i])
         print(all_coeff_matrix[i])
         print(all_aMatS[i])
         record.append({
+                "bonds_with_diff_sym": i,
                 "combination": all_combination[i],
                 "coeff_matrix": all_coeff_matrix[i].tolist(),
                 "values": [" "] * all_aMatS[i].shape[2]
             })
-    with open(, "w") as f:
+    with open(os.path.join(base_dir, "coefficent.json"), 'w') as f:
         json.dump(record, f, indent=4)
-    print(f" {output_file}")
-    # pass
+    # print(f" {output_file}")
+    # # pass
 
 
 
@@ -757,7 +759,7 @@ supercell.sort()
 print(supercell)
 
 
-supercell.to(filename=r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test9\POSCAR", fmt="poscar")
+supercell.to(filename=r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test11\POSCAR", fmt="poscar")
 
 bond_end_index_in_unitcell = []
 for key, nested_dict in bonds_dict.items():
@@ -811,9 +813,9 @@ print("Magnetic atom indices:", magnetic_atom_indices)
 total_atom_number = supercell.num_sites
 # magmom_tags = get_magmom_tags(bond_start_idx_in_sc, bond_end_idx_in_sc, all_combination, total_atom_number, magnetic_atom_indices)
 
-base_dir = r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test9" 
-template_INCAR_path = r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test9\INCAR"  # 模板文件路径
-source_dir = r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test9" 
+base_dir = r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test11" 
+template_INCAR_path = r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test11\INCAR"  # 模板文件路径
+source_dir = r"C:\Users\wangh\OneDrive\Desktop\Codes\SymmMagHam\pyspinM\test11" 
 magnetic_directions = {
     0: "5 0 0",
     1: "0 5 0",
@@ -822,4 +824,4 @@ magnetic_directions = {
 # Example usage
 generate_magmom_files(base_dir, bond_start_idx_in_sc, bond_end_idx_in_sc, all_combination, total_atom_number, magnetic_directions, template_INCAR_path, source_dir, magnetic_atom_indices)
 # print(symmetry_dataset)
-save_indices_and_coeff_matrix(all_combination,all_coeff_matrix,all_aMatS)
+save_indices_and_coeff_matrix(base_dir,all_combination,all_coeff_matrix,all_aMatS)
